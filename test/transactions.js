@@ -22,6 +22,29 @@ function applyTransactionFee(amountBeforeFee) {
   return amountAfterFee;
 }
 
+function calcEthTransferForBuyEcl(
+  ethBalanceOfEclPool,
+  ethBalanceOfDaiPool,
+  ethSent
+) {
+  let ethTransferToDaiPool = new BN();
+
+  if (
+    ethBalanceOfEclPool.gte(ethSent.div(new BN("2")).add(ethBalanceOfDaiPool))
+  ) {
+    ethTransferToDaiPool = ethSent.mul(new BN("3")).div(new BN("4"));
+  } else if (ethBalanceOfEclPool.add(ethSent).lte(ethBalanceOfDaiPool)) {
+    ethTransferToDaiPool = new BN("0");
+  } else {
+    ethTransferToDaiPool = ethBalanceOfEclPool
+      .add(ethSent)
+      .sub(ethBalanceOfDaiPool)
+      .div(new BN("2"));
+  }
+
+  return ethTransferToDaiPool;
+}
+
 contract("Eclipseum - Transaction Function Tests", (accounts) => {
   it("launch succeeds", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
@@ -1428,6 +1451,53 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       actualEclBurned.toString(),
       expectedEclBurned.toString(),
       "softSellEcl did not burn the correct amount of ECL."
+    );
+  });
+
+  it("buyEcl transfers correct amount of ETH to ECL pool", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+
+    const ethToSpend = new BN("1").mul(decimalFactor);
+
+    const initialEthBalanceOfEclPool = await eclipseumInstance.ethBalanceOfEclPool(
+      {
+        from: accounts[0],
+      }
+    );
+
+    const initialEthBalanceOfDaiPool = await eclipseumInstance.ethBalanceOfDaiPool(
+      {
+        from: accounts[0],
+      }
+    );
+
+    const minEclToReceive = new BN("0");
+
+    await eclipseumInstance.buyEcl(minEclToReceive, validDeadline, {
+      from: accounts[0],
+      value: ethToSpend,
+    });
+
+    const finalEthBalanceOfDaiPool = await eclipseumInstance.ethBalanceOfDaiPool(
+      {
+        from: accounts[0],
+      }
+    );
+
+    const actualEthTransferredToDaiPool = finalEthBalanceOfDaiPool.sub(
+      initialEthBalanceOfDaiPool
+    );
+
+    const expectedEthTransferredToDaiPool = calcEthTransferForBuyEcl(
+      initialEthBalanceOfEclPool,
+      initialEthBalanceOfDaiPool,
+      ethToSpend
+    );
+
+    assert.equal(
+      actualEthTransferredToDaiPool.toString(),
+      expectedEthTransferredToDaiPool.toString(),
+      "buyEcl did not transfer correct amount of ETH to DAI pool"
     );
   });
 });
