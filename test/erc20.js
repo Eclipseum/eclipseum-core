@@ -10,6 +10,42 @@ const validDeadline = new BN("10000000000000");
 const elapsedDeadline = new BN("0");
 
 contract("Eclipseum - ERC20 Tests", (accounts) => {
+  it("name returns correct value", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+
+    const actualName = await eclipseumInstance.name.call({
+      from: accounts[0],
+    });
+
+    const expectedName = "Eclipseum";
+
+    assert.equal(actualName, expectedName, "Name incorrect");
+  });
+
+  it("symbol returns correct value", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+
+    const actualSymbol = await eclipseumInstance.symbol.call({
+      from: accounts[0],
+    });
+
+    const expectedSymbol = "ECL";
+
+    assert.equal(actualSymbol, expectedSymbol, "Symbol incorrect");
+  });
+
+  it("decimals returns correct value", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+
+    const actualDecimals = await eclipseumInstance.decimals.call({
+      from: accounts[0],
+    });
+
+    const expectedDecimals = "18";
+
+    assert.equal(actualDecimals, expectedDecimals, "Decimals incorrect");
+  });
+
   it("totalSupply returns correct value", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
     const actualTotalSupply = await eclipseumInstance.totalSupply.call({
@@ -161,7 +197,7 @@ contract("Eclipseum - ERC20 Tests", (accounts) => {
     );
   });
 
-  it("allowance is successfully updated after approval", async () => {
+  it("approve successfully updates allowance", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
 
     const eclToApprove = new BN("10").mul(decimalFactor);
@@ -183,6 +219,86 @@ contract("Eclipseum - ERC20 Tests", (accounts) => {
     assert.equal(
       actualAllowance.toString(),
       expectedAllowance.toString(),
+      "Allowance not updated correctly"
+    );
+  });
+
+  it("decreaseAllowance successfully updates allowance", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+
+    const decreaseAllowanceAmount = new BN("5").mul(decimalFactor);
+
+    const initialAllowance = await eclipseumInstance.allowance(
+      accounts[0],
+      accounts[1],
+      {
+        from: accounts[0],
+      }
+    );
+
+    await eclipseumInstance.decreaseAllowance(
+      accounts[1],
+      decreaseAllowanceAmount,
+      {
+        from: accounts[0],
+      }
+    );
+
+    const actualFinalAllowance = await eclipseumInstance.allowance(
+      accounts[0],
+      accounts[1],
+      {
+        from: accounts[0],
+      }
+    );
+
+    const expectedFinalAllowance = initialAllowance.sub(
+      decreaseAllowanceAmount
+    );
+
+    assert.equal(
+      actualFinalAllowance.toString(),
+      expectedFinalAllowance.toString(),
+      "Allowance not updated correctly"
+    );
+  });
+
+  it("increaseAllowance successfully updates allowance", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+
+    const increaseAllowanceAmount = new BN("10").mul(decimalFactor);
+
+    const initialAllowance = await eclipseumInstance.allowance(
+      accounts[0],
+      accounts[1],
+      {
+        from: accounts[0],
+      }
+    );
+
+    await eclipseumInstance.increaseAllowance(
+      accounts[1],
+      increaseAllowanceAmount,
+      {
+        from: accounts[0],
+      }
+    );
+
+    const actualFinalAllowance = await eclipseumInstance.allowance(
+      accounts[0],
+      accounts[1],
+      {
+        from: accounts[0],
+      }
+    );
+
+    const expectedFinalAllowance = initialAllowance.add(
+      increaseAllowanceAmount
+    );
+
+    assert.equal(
+      actualFinalAllowance.toString(),
+      expectedFinalAllowance.toString(),
       "Allowance not updated correctly"
     );
   });
