@@ -6,21 +6,7 @@ const Eclipseum = artifacts.require("Eclipseum");
 const DAI = artifacts.require("DAI");
 
 const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
-const elapsedDeadline = new BN(Math.floor(Date.now() / 1000) - 60 * 20); // 20 minutes in the past
 const decimalFactor = new BN(Math.pow(10, 18).toString());
-const gasPrice = new BN("20000000000");
-
-function calcBOut(aBalance, bBalance, aSold) {
-  let denominator = aBalance.add(aSold);
-  let fraction = aBalance.mul(bBalance).div(denominator);
-  let bBought = bBalance.sub(fraction).sub(new BN("1"));
-  return bBought;
-}
-
-function applyTransactionFee(amountBeforeFee) {
-  const amountAfterFee = amountBeforeFee.mul(new BN("997")).div(new BN("1000"));
-  return amountAfterFee;
-}
 
 contract("Eclipseum - Launch Tests", (accounts) => {
   it("Correct Supply Minted", async () => {

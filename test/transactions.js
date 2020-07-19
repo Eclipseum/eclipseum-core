@@ -747,14 +747,6 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       await web3.eth.getBalance(accounts[0])
     );
 
-    const initialUserEclBalance = await eclipseumInstance.balanceOf(
-      accounts[0]
-    );
-
-    const initialEclBalanceOfEclPool = await eclipseumInstance.eclBalanceOfEclPool(
-      { from: accounts[0] }
-    );
-
     const initialEthVolumeOfEclPool = await eclipseumInstance.ethVolumeOfEclPool.call(
       {
         from: accounts[0],
@@ -895,10 +887,6 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
 
   it("buyDai correctly increments ethVolumeOfDaiPool", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-
-    const initialUserEthBalance = new BN(
-      await web3.eth.getBalance(accounts[0])
-    );
 
     const initialEthVolumeOfDaiPool = await eclipseumInstance.ethVolumeOfDaiPool.call(
       {
@@ -1331,17 +1319,6 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
 
     const initialUserEclBalance = await eclipseumInstance.balanceOf.call(
       accounts[0]
-    );
-
-    const initialEclBalanceOfEclPool = await eclipseumInstance.eclBalanceOfEclPool(
-      {
-        from: accounts[0],
-      }
-    );
-    const initialEthBalanceOfEclPool = await eclipseumInstance.ethBalanceOfEclPool(
-      {
-        from: accounts[0],
-      }
     );
 
     const minEclToReceive = new BN("0");

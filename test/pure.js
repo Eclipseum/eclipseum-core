@@ -15,11 +15,6 @@ function calcBOut(aBalance, bBalance, aSold) {
   return bBought;
 }
 
-function applyTransactionFee(amountBeforeFee) {
-  const amountAfterFee = amountBeforeFee.mul(new BN("997")).div(new BN("1000"));
-  return amountAfterFee;
-}
-
 function calcEthTransferForBuyEcl(
   ethBalanceOfEclPool,
   ethBalanceOfDaiPool,
