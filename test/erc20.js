@@ -6,8 +6,7 @@ const Eclipseum = artifacts.require("Eclipseum");
 const DAI = artifacts.require("DAI");
 
 const decimalFactor = new BN(Math.pow(10, 18).toString());
-const validDeadline = new BN("10000000000000");
-const elapsedDeadline = new BN("0");
+const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
 
 contract("Eclipseum - ERC20 Tests", (accounts) => {
   it("name returns correct value", async () => {
