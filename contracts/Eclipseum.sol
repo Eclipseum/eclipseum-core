@@ -55,10 +55,6 @@ contract Eclipseum is ERC20, ReentrancyGuard {
             daiInterface.balanceOf(address(this)) > 0,
             "DAI pool balance must be greater than zero to launch contract."
         );
-        require(
-            address(this).balance >= 0.2 ether,
-            "Contract account balance must be at least 0.2 Ether."
-        );
 
         ethBalanceOfEclPool = 0.1 ether;
 
