@@ -23,7 +23,7 @@ function applyTransactionFee(amountBeforeFee) {
 }
 
 contract("Eclipseum - Transaction Function Tests", (accounts) => {
-  it("Allows user to launch", async () => {
+  it("launch succeeds", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
     const daiInstance = await DAI.deployed();
 
@@ -40,60 +40,6 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
     });
 
     assert.equal(launched, true, "Did not launch");
-  });
-
-  it("Allows User to buy DAI", async () => {
-    const daiInstance = await DAI.deployed();
-    const eclipseumInstance = await Eclipseum.deployed();
-    const initialUserDaiBalance = await daiInstance.balanceOf.call(accounts[0]);
-    const ethToSpend = new BN("1").mul(decimalFactor);
-
-    await eclipseumInstance.buyDai(0, 1000000000000, {
-      from: accounts[0],
-      value: ethToSpend,
-    });
-
-    const finalUserDaiBalance = await daiInstance.balanceOf.call(accounts[0]);
-
-    assert.ok(
-      finalUserDaiBalance.toString() > initialUserDaiBalance.toString(),
-      "User DAI balance should have increased."
-    );
-  });
-
-  it("Cannot sell DAI without allowance approved.", async () => {
-    const eclipseumInstance = await Eclipseum.deployed();
-    const daiInstance = await DAI.deployed();
-
-    await truffleAssert.reverts(
-      eclipseumInstance.sellDai(10, 0, 100000000000000, {
-        from: accounts[0],
-      }),
-      "DAI sold exceeds allowance"
-    );
-  });
-
-  it("Allows User to sell DAI", async () => {
-    const daiInstance = await DAI.deployed();
-    const eclipseumInstance = await Eclipseum.deployed();
-    const daiToSell = new BN("10").mul(decimalFactor);
-
-    const initialDaiBalance = await daiInstance.balanceOf.call(accounts[0]);
-
-    await daiInstance.approve(eclipseumInstance.address, daiToSell, {
-      from: accounts[0],
-    });
-
-    await eclipseumInstance.sellDai(daiToSell, 0, 1000000000000, {
-      from: accounts[0],
-    });
-
-    const finalDaiBalance = await daiInstance.balanceOf.call(accounts[0]);
-
-    assert.ok(
-      finalDaiBalance < initialDaiBalance,
-      "DAI balance should have decreased"
-    );
   });
 
   it("buyEcl reverts when called with 0 ETH to spend", async () => {
