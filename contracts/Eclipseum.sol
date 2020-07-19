@@ -61,7 +61,8 @@ contract Eclipseum is ERC20, ReentrancyGuard {
         launched = true;
 
         assert(
-            ethBalanceOfEclPool + ethBalanceOfDaiPool() == address(this).balance
+            ethBalanceOfEclPool.add(ethBalanceOfDaiPool()) ==
+                address(this).balance
         );
     }
 
@@ -288,7 +289,7 @@ contract Eclipseum is ERC20, ReentrancyGuard {
         );
         require(msg.value > 0, "Value of ETH sent must be greater than zero.");
 
-        uint256 _ethBalanceOfDaiPool = ethBalanceOfDaiPool() - msg.value;
+        uint256 _ethBalanceOfDaiPool = ethBalanceOfDaiPool().sub(msg.value);
         uint256 _daiBalanceOfDaiPool = daiBalanceOfDaiPool();
         uint256 _daiToReceive = applyTransactionFee(
             calcBOut(_ethBalanceOfDaiPool, _daiBalanceOfDaiPool, msg.value)
@@ -470,7 +471,7 @@ contract Eclipseum is ERC20, ReentrancyGuard {
         requireLaunched
         returns (uint256)
     {
-        return address(this).balance - ethBalanceOfEclPool;
+        return address(this).balance.sub(ethBalanceOfEclPool);
     }
 
     /// @notice Returns the DAI balance of the DAI pool.
@@ -485,6 +486,6 @@ contract Eclipseum is ERC20, ReentrancyGuard {
 
     /// @notice Returns the circulating supply of ECL.
     function circulatingSupply() public view requireLaunched returns (uint256) {
-        return totalSupply() - eclBalanceOfEclPool();
+        return totalSupply().sub(eclBalanceOfEclPool());
     }
 }
