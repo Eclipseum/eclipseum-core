@@ -291,6 +291,29 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
     );
   });
 
+  it("sellDai reverts when user attempts to sell more DAI than the current allowance", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+    const daiInstance = await DAI.deployed();
+
+    const userDaiBalance = await daiInstance.balanceOf(accounts[0]);
+
+    const daiToSell = userDaiBalance.sub(new BN("1"));
+    const daiToApprove = daiToSell.sub(new BN("1"));
+
+    const minEthToReceive = new BN("0");
+
+    await daiInstance.approve(eclipseumInstance.address, daiToApprove, {
+      from: accounts[0],
+    });
+
+    await truffleAssert.reverts(
+      eclipseumInstance.sellDai(daiToSell, minEthToReceive, validDeadline, {
+        from: accounts[0],
+      }),
+      "DAI sold exceeds allowance."
+    );
+  });
+
   it("sellDai reverts when user attempts to sell more DAI than their current balance", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
     const daiInstance = await DAI.deployed();
