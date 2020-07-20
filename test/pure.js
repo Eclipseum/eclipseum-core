@@ -1,41 +1,16 @@
-const truffleAssert = require("truffle-assertions");
 const BN = require("bn.js");
 const { assert } = require("chai");
+const helper = require("../helpers/helper.js");
 
 const Eclipseum = artifacts.require("Eclipseum");
-const DAI = artifacts.require("DAI");
 
 const decimalFactor = new BN(Math.pow(10, 18).toString());
-const gasPrice = new BN("20000000000");
 
 function calcBOut(aBalance, bBalance, aSold) {
   let denominator = aBalance.add(aSold);
   let fraction = aBalance.mul(bBalance).div(denominator);
   let bBought = bBalance.sub(fraction).sub(new BN("1")); // Testing bn.js
   return bBought;
-}
-
-function calcEthTransferForBuyEcl(
-  ethBalanceOfEclPool,
-  ethBalanceOfDaiPool,
-  ethSent
-) {
-  let ethTransferToDaiPool = new BN();
-
-  if (
-    ethBalanceOfEclPool.gte(ethSent.div(new BN("2")).add(ethBalanceOfDaiPool))
-  ) {
-    ethTransferToDaiPool = ethSent.mul(new BN("3")).div(new BN("4"));
-  } else if (ethBalanceOfEclPool.add(ethSent).lte(ethBalanceOfDaiPool)) {
-    ethTransferToDaiPool = new BN("0");
-  } else {
-    ethTransferToDaiPool = ethBalanceOfEclPool
-      .add(ethSent)
-      .sub(ethBalanceOfDaiPool)
-      .div(new BN("2"));
-  }
-
-  return ethTransferToDaiPool;
 }
 
 contract("Eclipseum - Pure Function Tests", (accounts) => {
@@ -78,7 +53,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -106,7 +81,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -134,7 +109,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -162,7 +137,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -190,7 +165,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -218,7 +193,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -246,7 +221,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -274,7 +249,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -302,7 +277,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -330,7 +305,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold
@@ -358,7 +333,7 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthTransfer = calcEthTransferForBuyEcl(
+    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
       ethBalanceOfDaiPool,
       ethSold

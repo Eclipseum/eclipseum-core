@@ -1,49 +1,15 @@
 const truffleAssert = require("truffle-assertions");
 const BN = require("bn.js");
 const { assert } = require("chai");
+const helper = require("../helpers/helper.js");
 
 const Eclipseum = artifacts.require("Eclipseum");
 const DAI = artifacts.require("DAI");
 
+const decimalFactor = new BN(Math.pow(10, 18).toString());
 const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
 const elapsedDeadline = new BN(Math.floor(Date.now() / 1000) - 60 * 20); // 20 minutes in the past
-const decimalFactor = new BN(Math.pow(10, 18).toString());
 const gasPrice = new BN("20000000000");
-
-function calcBOut(aBalance, bBalance, aSold) {
-  let denominator = aBalance.add(aSold);
-  let fraction = aBalance.mul(bBalance).div(denominator);
-  let bBought = bBalance.sub(fraction).sub(new BN("1"));
-  return bBought;
-}
-
-function applyTransactionFee(amountBeforeFee) {
-  const amountAfterFee = amountBeforeFee.mul(new BN("997")).div(new BN("1000"));
-  return amountAfterFee;
-}
-
-function calcEthTransferForBuyEcl(
-  ethBalanceOfEclPool,
-  ethBalanceOfDaiPool,
-  ethSent
-) {
-  let ethTransferToDaiPool = new BN();
-
-  if (
-    ethBalanceOfEclPool.gte(ethSent.div(new BN("2")).add(ethBalanceOfDaiPool))
-  ) {
-    ethTransferToDaiPool = ethSent.mul(new BN("3")).div(new BN("4"));
-  } else if (ethBalanceOfEclPool.add(ethSent).lte(ethBalanceOfDaiPool)) {
-    ethTransferToDaiPool = new BN("0");
-  } else {
-    ethTransferToDaiPool = ethBalanceOfEclPool
-      .add(ethSent)
-      .sub(ethBalanceOfDaiPool)
-      .div(new BN("2"));
-  }
-
-  return ethTransferToDaiPool;
-}
 
 contract("Eclipseum - Transaction Function Tests", (accounts) => {
   it("launch succeeds", async () => {
@@ -381,8 +347,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
     const actualEthSpent = initialUserEthBalance.sub(finalUserEthBalance);
 
     const expectedEclReceived = new BN(
-      applyTransactionFee(
-        calcBOut(
+      helper.applyTransactionFee(
+        helper.calcBOut(
           initialEthBalanceOfEclPool,
           initialEclBalanceOfEclPool,
           ethToSpend
@@ -457,8 +423,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
     const actualEclSold = initialUserEclBalance.sub(finalUserEclBalance);
 
     const expectedEthReceived = new BN(
-      applyTransactionFee(
-        calcBOut(
+      helper.applyTransactionFee(
+        helper.calcBOut(
           initialEclBalanceOfEclPool,
           initialEthBalanceOfEclPool,
           eclToSell
@@ -543,11 +509,11 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
 
     const actualEclSold = initialUserEclBalance.sub(finalUserEclBalance);
 
-    const expectedEthReceivedFromEclPool = applyTransactionFee(
+    const expectedEthReceivedFromEclPool = helper.applyTransactionFee(
       eclToSell.mul(ethBalanceOfEclPool).div(eclCirculatingSupply)
     );
 
-    const expectedEthReceivedFromDaiPool = applyTransactionFee(
+    const expectedEthReceivedFromDaiPool = helper.applyTransactionFee(
       eclToSell.mul(ethBalanceOfDaiPool).div(eclCirculatingSupply)
     );
 
@@ -555,7 +521,7 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       expectedEthReceivedFromEclPool
     );
 
-    const expectedDaiReceived = applyTransactionFee(
+    const expectedDaiReceived = helper.applyTransactionFee(
       eclToSell.mul(daiBalanceOfDaiPool).div(eclCirculatingSupply)
     );
 
@@ -618,8 +584,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
 
     const finalUserEthBalance = new BN(await web3.eth.getBalance(accounts[0]));
 
-    const expectedDaiReceived = applyTransactionFee(
-      calcBOut(
+    const expectedDaiReceived = helper.applyTransactionFee(
+      helper.calcBOut(
         initialEthBalanceOfDaiPool,
         initialDaiBalanceOfDaiPool,
         ethToSpend
@@ -692,8 +658,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
 
     const finalUserDaiBalance = await daiInstance.balanceOf(accounts[0]);
 
-    const expectedEthReceived = applyTransactionFee(
-      calcBOut(
+    const expectedEthReceived = helper.applyTransactionFee(
+      helper.calcBOut(
         initialDaiBalanceOfDaiPool,
         initialEthBalanceOfDaiPool,
         daiToSell
@@ -875,11 +841,11 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthReceivedFromEclPool = applyTransactionFee(
+    const expectedEthReceivedFromEclPool = helper.applyTransactionFee(
       eclToSell.mul(initialEthBalanceOfEclPool).div(initialEclCirculatingSupply)
     );
 
-    const expectedEthReceivedFromDaiPool = applyTransactionFee(
+    const expectedEthReceivedFromDaiPool = helper.applyTransactionFee(
       eclToSell.mul(initialEthBalanceOfDaiPool).div(initialEclCirculatingSupply)
     );
 
@@ -1025,8 +991,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       { from: accounts[0] }
     );
 
-    const expectedEclToReceive = applyTransactionFee(
-      calcBOut(
+    const expectedEclToReceive = helper.applyTransactionFee(
+      helper.calcBOut(
         initialEthBalanceOfEclPool,
         initialEclBalanceOfEclPool,
         ethToSpend
@@ -1057,8 +1023,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       { from: accounts[0] }
     );
 
-    const expectedEthToReceive = applyTransactionFee(
-      calcBOut(
+    const expectedEthToReceive = helper.applyTransactionFee(
+      helper.calcBOut(
         initialEclBalanceOfEclPool,
         initialEthBalanceOfEclPool,
         eclToSell
@@ -1098,11 +1064,11 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthReceivedFromEclPool = applyTransactionFee(
+    const expectedEthReceivedFromEclPool = helper.applyTransactionFee(
       eclToSell.mul(initialEthBalanceOfEclPool).div(initialEclCirculatingSupply)
     );
 
-    const expectedEthReceivedFromDaiPool = applyTransactionFee(
+    const expectedEthReceivedFromDaiPool = helper.applyTransactionFee(
       eclToSell.mul(initialEthBalanceOfDaiPool).div(initialEclCirculatingSupply)
     );
 
@@ -1144,7 +1110,7 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       }
     );
 
-    const expectedDaiReceivedFromDaiPool = applyTransactionFee(
+    const expectedDaiReceivedFromDaiPool = helper.applyTransactionFee(
       eclToSell.mul(initialDaiBalanceOfDaiPool).div(initialEclCirculatingSupply)
     );
 
@@ -1182,8 +1148,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       }
     );
 
-    const expectedDaiToReceive = applyTransactionFee(
-      calcBOut(
+    const expectedDaiToReceive = helper.applyTransactionFee(
+      helper.calcBOut(
         initialEthBalanceOfDaiPool,
         initialDaiBalanceOfDaiPool,
         ethToSpend
@@ -1219,8 +1185,8 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       }
     );
 
-    const expectedEthToReceive = applyTransactionFee(
-      calcBOut(
+    const expectedEthToReceive = helper.applyTransactionFee(
+      helper.calcBOut(
         initialDaiBalanceOfDaiPool,
         initialEthBalanceOfDaiPool,
         daiToSell
@@ -1308,13 +1274,15 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       { from: accounts[0] }
     );
 
-    const ethToReceiveBeforeFee = calcBOut(
+    const ethToReceiveBeforeFee = helper.calcBOut(
       initialDaiBalanceOfDaiPool,
       initialEthBalanceOfDaiPool,
       daiToSell
     );
 
-    const ethToReceiveAfterFee = applyTransactionFee(ethToReceiveBeforeFee);
+    const ethToReceiveAfterFee = helper.applyTransactionFee(
+      ethToReceiveBeforeFee
+    );
 
     const expectedEthTransferredToEclPool = ethToReceiveBeforeFee
       .sub(ethToReceiveAfterFee)
@@ -1443,9 +1411,13 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
 
     const actualEclBurned = initialEclTotalSupply.sub(finalEclTotalSupply);
 
-    const expectedEclBurned = applyTransactionFee(
-      eclToSell.mul(initialEclBalanceOfEclPool).div(initialEclCirculatingSupply)
-    ).add(eclToSell);
+    const expectedEclBurned = helper
+      .applyTransactionFee(
+        eclToSell
+          .mul(initialEclBalanceOfEclPool)
+          .div(initialEclCirculatingSupply)
+      )
+      .add(eclToSell);
 
     assert.equal(
       actualEclBurned.toString(),
@@ -1488,7 +1460,7 @@ contract("Eclipseum - Transaction Function Tests", (accounts) => {
       initialEthBalanceOfDaiPool
     );
 
-    const expectedEthTransferredToDaiPool = calcEthTransferForBuyEcl(
+    const expectedEthTransferredToDaiPool = helper.calcEthTransferForBuyEcl(
       initialEthBalanceOfEclPool,
       initialEthBalanceOfDaiPool,
       ethToSpend

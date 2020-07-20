@@ -1,15 +1,12 @@
 const truffleAssert = require("truffle-assertions");
 const BN = require("bn.js");
 const { assert } = require("chai");
-const eclipseumJson = require("../build/contracts/Eclipseum.json");
-const deployer = require("../migrations/2_deploy_contracts.js");
 
 const Eclipseum = artifacts.require("Eclipseum");
 const DAI = artifacts.require("DAI");
 
-const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
 const decimalFactor = new BN(Math.pow(10, 18).toString());
-const gasPrice = new BN("20000000000");
+const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
 
 contract("Eclipseum - Launch Tests", (accounts) => {
   it("Correct Supply Minted", async () => {
@@ -222,8 +219,6 @@ contract("Eclipseum - Launch Tests", (accounts) => {
     const expectedEthBalanceOfDaiPool = new BN("2")
       .mul(decimalFactor)
       .div(new BN("10"));
-
-    console.log("Old instance: ", eclipseumInstance.address);
 
     assert.equal(
       actualEthBalanceOfDaiPool.toString(),

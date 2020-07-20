@@ -1,4 +1,3 @@
-const truffleAssert = require("truffle-assertions");
 const BN = require("bn.js");
 const { assert } = require("chai");
 
@@ -6,7 +5,6 @@ const Eclipseum = artifacts.require("Eclipseum");
 const DAI = artifacts.require("DAI");
 
 const decimalFactor = new BN(Math.pow(10, 18).toString());
-const gasPrice = new BN("20000000000");
 
 contract("Eclipseum - View Function Tests", async (accounts) => {
   it("ethBalanceOfDaiPool returns correct value", async () => {

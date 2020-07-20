@@ -5,8 +5,8 @@ const { assert } = require("chai");
 const Eclipseum = artifacts.require("Eclipseum");
 const DAI = artifacts.require("DAI");
 
-const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
 const decimalFactor = new BN(Math.pow(10, 18).toString());
+const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
 const gasPrice = new BN("20000000000");
 
 contract("Eclipseum - Event Tests", (accounts) => {
