@@ -215,4 +215,26 @@ contract("Eclipseum - Launch Tests", (accounts) => {
       "Incorrect ethBalanceOfDaiPool"
     );
   });
+  /*
+  it("deploy Eclipseum fails when less than 0.2 ether sent with transaction", async (deployer) => {
+    const eclipseumInstance = await Eclipseum.deployed();
+    const daiInstance = await DAI.deployed();
+
+    console.log("Old instance: ", eclipseumInstance.address);
+    const daiAddress = daiInstance.address;
+    const weiToDeploy = web3.utils.toWei("0.3", "ether");
+    //const newInstance = Eclipseum.new(daiAddress, { value: weiToDeploy });
+    deployer.deploy(Eclipseum, daiAddress, { value: weiToDeploy });
+
+    const eclipseumInstanceNew = await Eclipseum.deployed();
+    console.log("New instance: ", eclipseumInstanceNew.address);
+
+    await truffleAssert.reverts(
+      eclipseumInstance.launch({
+        from: accounts[0],
+      }),
+      "DAI pool balance must be greater than zero to launch contract."
+    );
+  });
+  */
 });
