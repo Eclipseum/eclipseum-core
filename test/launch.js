@@ -1,12 +1,15 @@
 const truffleAssert = require("truffle-assertions");
 const BN = require("bn.js");
 const { assert } = require("chai");
+const eclipseumJson = require("../build/contracts/Eclipseum.json");
+const deployer = require("../migrations/2_deploy_contracts.js");
 
 const Eclipseum = artifacts.require("Eclipseum");
 const DAI = artifacts.require("DAI");
 
 const validDeadline = new BN(Math.floor(Date.now() / 1000) + 60 * 20); // 20 minutes in the future
 const decimalFactor = new BN(Math.pow(10, 18).toString());
+const gasPrice = new BN("20000000000");
 
 contract("Eclipseum - Launch Tests", (accounts) => {
   it("Correct Supply Minted", async () => {
@@ -180,6 +183,17 @@ contract("Eclipseum - Launch Tests", (accounts) => {
     assert.equal(launched, true, "Failed to launch");
   });
 
+  it("launch function reverts when called after contract has already been launched.", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+
+    await truffleAssert.reverts(
+      eclipseumInstance.launch.call({
+        from: accounts[0],
+      }),
+      "Contract has already been launched."
+    );
+  });
+
   it("ethBalanceOfEclPool returns correct value", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
 
@@ -209,32 +223,12 @@ contract("Eclipseum - Launch Tests", (accounts) => {
       .mul(decimalFactor)
       .div(new BN("10"));
 
+    console.log("Old instance: ", eclipseumInstance.address);
+
     assert.equal(
       actualEthBalanceOfDaiPool.toString(),
       expectedEthBalanceOfDaiPool.toString(),
       "Incorrect ethBalanceOfDaiPool"
     );
   });
-  /*
-  it("deploy Eclipseum fails when less than 0.2 ether sent with transaction", async (deployer) => {
-    const eclipseumInstance = await Eclipseum.deployed();
-    const daiInstance = await DAI.deployed();
-
-    console.log("Old instance: ", eclipseumInstance.address);
-    const daiAddress = daiInstance.address;
-    const weiToDeploy = web3.utils.toWei("0.3", "ether");
-    //const newInstance = Eclipseum.new(daiAddress, { value: weiToDeploy });
-    deployer.deploy(Eclipseum, daiAddress, { value: weiToDeploy });
-
-    const eclipseumInstanceNew = await Eclipseum.deployed();
-    console.log("New instance: ", eclipseumInstanceNew.address);
-
-    await truffleAssert.reverts(
-      eclipseumInstance.launch({
-        from: accounts[0],
-      }),
-      "DAI pool balance must be greater than zero to launch contract."
-    );
-  });
-  */
 });
