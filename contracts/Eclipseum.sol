@@ -1,10 +1,12 @@
-pragma solidity 0.6.6;
+pragma solidity =0.5.17;
 
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
 import "../node_modules/openzeppelin-solidity/contracts/utils/ReentrancyGuard.sol";
+import "../node_modules/openzeppelin-solidity/contracts/utils/Address.sol";
 
 /// @title The Eclipseum ERC20 Smart Contract
-contract Eclipseum is ERC20, ReentrancyGuard {
+contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
     using SafeMath for uint256;
     using Address for address payable;
 
@@ -14,7 +16,7 @@ contract Eclipseum is ERC20, ReentrancyGuard {
         uint256 daiFromDaiPool;
     }
 
-    IERC20 public immutable daiInterface;
+    IERC20 public daiInterface;
     bool public launched;
     uint256 public ethBalanceOfEclPool;
     uint256 public ethVolumeOfEclPool;
@@ -30,20 +32,22 @@ contract Eclipseum is ERC20, ReentrancyGuard {
     event LogBuyDai(address userAddress, uint256 daiReceived);
     event LogSellDai(address userAddress, uint256 ethReceived);
 
-    event Informational(string message, uint256 value);
-
     modifier requireLaunched() {
         require(launched, "Contract must be launched to invoke this function.");
         _;
     }
 
     /// @notice The constructor must be called with at least 0.2 ETH.
-    constructor(address _daiAddress) public payable ERC20("Eclipseum", "ECL") {
+    constructor(address _daiAddress)
+        public
+        payable
+        ERC20Detailed("Eclipseum", "ECL", 18)
+    {
         require(
             msg.value >= 0.2 ether,
             "Must call constructor with at least 0.2 Ether."
         );
-        _mint(address(this), 100000 * (10**uint256(decimals())));
+        _mint(address(this), 100000 * (10**18));
         daiInterface = IERC20(_daiAddress);
     }
 
@@ -398,7 +402,7 @@ contract Eclipseum is ERC20, ReentrancyGuard {
     /// @dev errors from removing more of the asset from the liquidity pool than intended.
     /// @param _aBalance The balance of asset A in the liquidity pool.
     /// @param _bBalance The balance of asset B in the liquidity pool.
-    /// @param _aSent The quantity of asset A sent to the liquidity pool.
+    /// @param _aSent The quantity of asset A sent by the user to the liquidity pool.
     /// @return _bToReceive The quantity of asset B the user would receive before transaction fee is applied.
     function calcBOut(
         uint256 _aBalance,
