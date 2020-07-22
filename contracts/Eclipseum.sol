@@ -37,15 +37,15 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         _;
     }
 
-    /// @notice The constructor must be called with at least 0.2 ETH.
+    /// @notice The constructor must be called with at least 0.02 ETH.
     constructor(address _daiAddress)
         public
         payable
         ERC20Detailed("Eclipseum", "ECL", 18)
     {
         require(
-            msg.value >= 0.2 ether,
-            "Must call constructor with at least 0.2 Ether."
+            msg.value >= 0.02 ether,
+            "Must call constructor with at least 0.02 Ether."
         );
         _mint(address(this), 100000 * (10**18));
         daiInterface = IERC20(_daiAddress);
@@ -60,7 +60,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
             "DAI pool balance must be greater than zero to launch contract."
         );
 
-        ethBalanceOfEclPool = 0.1 ether;
+        ethBalanceOfEclPool = 0.01 ether;
 
         launched = true;
 

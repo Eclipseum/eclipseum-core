@@ -200,7 +200,7 @@ contract("Eclipseum - Launch Tests", (accounts) => {
 
     const expectedEthBalanceOfEclPool = new BN("1")
       .mul(decimalFactor)
-      .div(new BN("10"));
+      .div(new BN("100"));
 
     assert.equal(
       actualEthBalanceOfEclPool.toString(),
@@ -218,7 +218,7 @@ contract("Eclipseum - Launch Tests", (accounts) => {
 
     const expectedEthBalanceOfDaiPool = new BN("2")
       .mul(decimalFactor)
-      .div(new BN("10"));
+      .div(new BN("100"));
 
     assert.equal(
       actualEthBalanceOfDaiPool.toString(),
