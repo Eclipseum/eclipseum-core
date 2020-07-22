@@ -47,7 +47,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
             msg.value >= 0.02 ether,
             "Must call constructor with at least 0.02 Ether."
         );
-        _mint(address(this), 100000 * (10**18));
+        _mint(address(this), 1e5 * (10**18));
         daiInterface = IERC20(_daiAddress);
     }
 
