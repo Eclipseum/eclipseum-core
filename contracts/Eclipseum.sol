@@ -407,8 +407,8 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
     }
 
     /// @notice Calculates amount of asset B for user to receive using constant product market maker algorithm.
-    /// @dev A value of one is subtracted in the _bToReceive calculation to prevent rounding
-    /// @dev errors from removing more of the asset from the liquidity pool than intended.
+    /// @dev A value of one is subtracted in the _bToReceive calculation such that rounding
+    /// @dev errors favour the pool over the user.
     /// @param aBalance The balance of asset A in the liquidity pool.
     /// @param bBalance The balance of asset B in the liquidity pool.
     /// @param aSent The quantity of asset A sent by the user to the liquidity pool.

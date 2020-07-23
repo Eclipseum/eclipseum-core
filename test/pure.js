@@ -38,6 +38,30 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
     );
   });
 
+  it("calcBOut rounding favors the pool, not the user", async () => {
+    const eclipseumInstance = await Eclipseum.deployed();
+    const aBalance = new BN("100").mul(decimalFactor);
+    const bBalance = new BN("1");
+    const aSold = new BN("1000").mul(decimalFactor);
+
+    const actualBOut = await eclipseumInstance.calcBOut(
+      aBalance,
+      bBalance,
+      aSold,
+      {
+        from: accounts[0],
+      }
+    );
+
+    const expectedBOut = new BN("0");
+
+    assert.equal(
+      actualBOut.toString(),
+      expectedBOut.toString(),
+      "calcBOut Function does not calculate correct value."
+    );
+  });
+
   it("calcEthTransferForBuyEcl calculates correct transfer 1", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
     const ethBalanceOfEclPool = new BN("110").mul(decimalFactor);
