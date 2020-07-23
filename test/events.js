@@ -45,10 +45,12 @@ contract("Eclipseum - Event Tests", (accounts) => {
     const actualEventName = receipt.logs[0].event;
     const actualEventArg0 = receipt.logs[0].args[0];
     const actualEventArg1 = receipt.logs[0].args[1];
+    const actualEventArg2 = receipt.logs[0].args[2];
 
     const expectedEventName = "LogBuyEcl";
     const expectedEventArg0 = accounts[0];
-    const expectedEventArg1 = finalUserEclBalance.sub(initialUserEclBalance);
+    const expectedEventArg1 = ethToSpend;
+    const expectedEventArg2 = finalUserEclBalance.sub(initialUserEclBalance);
 
     assert.equal(
       actualEventName.toString(),
@@ -65,11 +67,15 @@ contract("Eclipseum - Event Tests", (accounts) => {
       expectedEventArg1.toString(),
       "Incorrect Arg1"
     );
+    assert.equal(
+      actualEventArg2.toString(),
+      expectedEventArg2.toString(),
+      "Incorrect Arg2"
+    );
   });
 
   it("sellEcl emits event with correct values", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const daiInstance = await DAI.deployed();
 
     const initialUserEthBalance = new BN(
       await web3.eth.getBalance(accounts[0])
@@ -95,10 +101,12 @@ contract("Eclipseum - Event Tests", (accounts) => {
     const actualEventName = receipt.logs[0].event;
     const actualEventArg0 = receipt.logs[0].args[0];
     const actualEventArg1 = receipt.logs[0].args[1];
+    const actualEventArg2 = receipt.logs[0].args[2];
 
     const expectedEventName = "LogSellEcl";
     const expectedEventArg0 = accounts[0];
-    const expectedEventArg1 = finalUserEthBalance
+    const expectedEventArg1 = eclToSell;
+    const expectedEventArg2 = finalUserEthBalance
       .sub(initialUserEthBalance)
       .add(ethUsedForGas);
 
@@ -116,6 +124,11 @@ contract("Eclipseum - Event Tests", (accounts) => {
       actualEventArg1.toString(),
       expectedEventArg1.toString(),
       "Incorrect Arg1"
+    );
+    assert.equal(
+      actualEventArg2.toString(),
+      expectedEventArg2.toString(),
+      "Incorrect Arg2"
     );
   });
 
@@ -154,13 +167,15 @@ contract("Eclipseum - Event Tests", (accounts) => {
     const actualEventArg0 = receipt.logs[0].args[0];
     const actualEventArg1 = receipt.logs[0].args[1];
     const actualEventArg2 = receipt.logs[0].args[2];
+    const actualEventArg3 = receipt.logs[0].args[3];
 
     const expectedEventName = "LogSoftSellEcl";
     const expectedEventArg0 = accounts[0];
-    const expectedEventArg1 = finalUserEthBalance
+    const expectedEventArg1 = eclToSell;
+    const expectedEventArg2 = finalUserEthBalance
       .sub(initialUserEthBalance)
       .add(ethUsedForGas);
-    const expectedEventArg2 = finalUserDaiBalance.sub(initialUserDaiBalance);
+    const expectedEventArg3 = finalUserDaiBalance.sub(initialUserDaiBalance);
 
     assert.equal(
       actualEventName.toString(),
@@ -182,6 +197,11 @@ contract("Eclipseum - Event Tests", (accounts) => {
       expectedEventArg2.toString(),
       "Incorrect Arg2"
     );
+    assert.equal(
+      actualEventArg3.toString(),
+      expectedEventArg3.toString(),
+      "Incorrect Arg3"
+    );
   });
 
   it("buyDai emits event with correct values", async () => {
@@ -202,18 +222,17 @@ contract("Eclipseum - Event Tests", (accounts) => {
       }
     );
 
-    const gasUsed = new BN(receipt.receipt.gasUsed);
-    const ethUsedForGas = gasUsed.mul(gasPrice);
-
     const finalUserDaiBalance = await daiInstance.balanceOf(accounts[0]);
 
     const actualEventName = receipt.logs[0].event;
     const actualEventArg0 = receipt.logs[0].args[0];
     const actualEventArg1 = receipt.logs[0].args[1];
+    const actualEventArg2 = receipt.logs[0].args[2];
 
     const expectedEventName = "LogBuyDai";
     const expectedEventArg0 = accounts[0];
-    const expectedEventArg1 = finalUserDaiBalance.sub(initialUserDaiBalance);
+    const expectedEventArg1 = ethToSpend;
+    const expectedEventArg2 = finalUserDaiBalance.sub(initialUserDaiBalance);
 
     assert.equal(
       actualEventName.toString(),
@@ -229,6 +248,11 @@ contract("Eclipseum - Event Tests", (accounts) => {
       actualEventArg1.toString(),
       expectedEventArg1.toString(),
       "Incorrect Arg1"
+    );
+    assert.equal(
+      actualEventArg2.toString(),
+      expectedEventArg2.toString(),
+      "Incorrect Arg2"
     );
   });
 
@@ -273,10 +297,12 @@ contract("Eclipseum - Event Tests", (accounts) => {
     const actualEventName = receipt2.logs[0].event;
     const actualEventArg0 = receipt2.logs[0].args[0];
     const actualEventArg1 = receipt2.logs[0].args[1];
+    const actualEventArg2 = receipt2.logs[0].args[2];
 
     const expectedEventName = "LogSellDai";
     const expectedEventArg0 = accounts[0];
-    const expectedEventArg1 = finalUserEthBalance
+    const expectedEventArg1 = daiToSell;
+    const expectedEventArg2 = finalUserEthBalance
       .sub(initialUserEthBalance)
       .add(ethUsedForGas);
 
@@ -294,6 +320,11 @@ contract("Eclipseum - Event Tests", (accounts) => {
       actualEventArg1.toString(),
       expectedEventArg1.toString(),
       "Incorrect Arg1"
+    );
+    assert.equal(
+      actualEventArg2.toString(),
+      expectedEventArg2.toString(),
+      "Incorrect Arg2"
     );
   });
 });

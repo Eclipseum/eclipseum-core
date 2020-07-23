@@ -22,15 +22,16 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
     uint256 public ethVolumeOfEclPool;
     uint256 public ethVolumeOfDaiPool;
 
-    event LogBuyEcl(address userAddress, uint256 eclReceived);
-    event LogSellEcl(address userAddress, uint256 ethReceived);
+    event LogBuyEcl(address userAddress, uint256 ethSpent, uint256 eclReceived);
+    event LogSellEcl(address userAddress, uint256 eclSold, uint256 ethReceived);
     event LogSoftSellEcl(
         address userAddress,
+        uint256 eclSold,
         uint256 ethReceived,
         uint256 daiReceived
     );
-    event LogBuyDai(address userAddress, uint256 daiReceived);
-    event LogSellDai(address userAddress, uint256 ethReceived);
+    event LogBuyDai(address userAddress, uint256 ethSpent, uint256 daiReceived);
+    event LogSellDai(address userAddress, uint256 daiSold, uint256 ethReceived);
 
     modifier requireLaunched() {
         require(launched, "Contract must be launched to invoke this function.");
@@ -116,7 +117,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
             .add(eclToMint);
         ethVolumeOfEclPool += msg.value;
 
-        emit LogBuyEcl(msg.sender, eclToReceive);
+        emit LogBuyEcl(msg.sender, msg.value, eclToReceive);
 
         _transfer(address(this), msg.sender, eclToReceive);
         _mint(address(this), eclToMint);
@@ -169,7 +170,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         );
         ethVolumeOfEclPool += ethToReceive;
 
-        emit LogSellEcl(msg.sender, ethToReceive);
+        emit LogSellEcl(msg.sender, eclSold, ethToReceive);
 
         _transfer(address(msg.sender), address(this), eclSold);
         _burn(address(this), eclToBurn);
@@ -254,6 +255,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
 
         emit LogSoftSellEcl(
             msg.sender,
+            eclSold,
             amountsToReceive.ethFromEclPool.add(
                 amountsToReceive.ethFromDaiPool
             ),
@@ -319,7 +321,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPoolLocal.sub(daiToReceive);
         ethVolumeOfDaiPool += msg.value;
 
-        emit LogBuyDai(msg.sender, daiToReceive);
+        emit LogBuyDai(msg.sender, msg.value, daiToReceive);
 
         assert(daiInterface.transfer(address(msg.sender), daiToReceive));
 
@@ -382,7 +384,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPoolLocal.add(daiSold);
         ethVolumeOfDaiPool += ethToReceive;
 
-        emit LogSellDai(msg.sender, ethToReceive);
+        emit LogSellDai(msg.sender, daiSold, ethToReceive);
 
         assert(
             daiInterface.transferFrom(
