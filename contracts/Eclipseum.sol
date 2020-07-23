@@ -54,8 +54,8 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
     }
 
     /// @notice This function is called once after deployment to launch the contract.
+    /// @notice Some amount of DAI must be transferred to the contract for launch to succeed.
     /// @notice Once launched, the transaction functions may be invoked.
-    /// @notice Some amount of DAI must be transferred to the contract before launch.
     function launch() external {
         require(!launched, "Contract has already been launched.");
 
