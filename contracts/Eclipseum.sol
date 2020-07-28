@@ -74,7 +74,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         );
     }
 
-    /// @notice Allows a user to buy ECL with ETH from the ECL liquidity pool.
+    /// @notice Enables a user to buy ECL with ETH from the ECL liquidity pool.
     /// @param minEclToReceive The minimum amount of ECL the user is willing to receive.
     /// @param deadline Epoch time deadline that the transaction must complete before, otherwise reverts.
     function buyEcl(uint256 minEclToReceive, uint256 deadline)
@@ -133,7 +133,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         assert(daiBalanceOfDaiPool() > 0);
     }
 
-    /// @notice Allows a user to sell ECL for ETH to the ECL liquidity pool.
+    /// @notice Enables a user to sell ECL for ETH to the ECL liquidity pool.
     /// @param eclSold The amount of ECL the user is selling.
     /// @param minEthToReceive The minimum amount of ETH the user is willing to receive.
     /// @param deadline Epoch time deadline that the transaction must complete before.
@@ -187,7 +187,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         assert(daiBalanceOfDaiPool() > 0);
     }
 
-    /// @notice Allows a user to sell ECL for ETH and DAI to the ECL liquidity pool.
+    /// @notice Enables a user to sell ECL for ETH and DAI to the ECL liquidity pool.
     /// @param eclSold The amount of ECL the user is selling.
     /// @param minEthToReceive The minimum amount of ETH the user is willing to receive.
     /// @param minDaiToReceive The minimum amount of DAI the user is willing to receive.
@@ -283,7 +283,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         assert(daiBalanceOfDaiPool() > 0);
     }
 
-    /// @notice Allows a user to buy DAI with ETH from the DAI liquidity pool.
+    /// @notice Enables a user to buy DAI with ETH from the DAI liquidity pool.
     /// @param minDaiToReceive The minimum amount of DAI the user is willing to receive.
     /// @param deadline Epoch time deadline that the transaction must complete before.
     function buyDai(uint256 minDaiToReceive, uint256 deadline)
@@ -336,7 +336,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         assert(daiBalanceOfDaiPool() > 0);
     }
 
-    /// @notice Allows a user to sell DAI for ETH to the DAI liquidity pool.
+    /// @notice Enables a user to sell DAI for ETH to the DAI liquidity pool.
     /// @param daiSold The amount of DAI the user is selling.
     /// @param minEthToReceive The minimum amount of ETH the user is willing to receive.
     /// @param deadline Epoch time deadline that the transaction must complete before.
