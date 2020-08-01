@@ -64,9 +64,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 1", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("110").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("20").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("1132").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -92,9 +92,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 2", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("110").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("19").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("1133").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -120,9 +120,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 3", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("110").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("21").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("1134").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -148,9 +148,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 4", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("90").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("10").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("1135").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -176,9 +176,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 5", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("90").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("9").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("965").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -204,9 +204,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 6", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("90").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("11").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("966").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -232,9 +232,14 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 7", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
+    /*
     const ethBalanceOfEclPool = new BN("100").mul(decimalFactor);
     const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
     const ethSold = new BN("0").mul(decimalFactor);
+    */
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("967").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -260,9 +265,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 8", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("100").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("1").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("968").mul(decimalFactor);
+    const ethSold = new BN("100").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -288,9 +293,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 9", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("100").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("10000").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("1000").mul(decimalFactor);
+    const ethSold = new BN("0").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,
@@ -316,37 +321,9 @@ contract("Eclipseum - Pure Function Tests", (accounts) => {
 
   it("calcEthTransferForBuyEcl calculates correct transfer 10", async () => {
     const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("0").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("100").mul(decimalFactor);
-    const ethSold = new BN("10000").mul(decimalFactor);
-
-    const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
-      ethBalanceOfEclPool,
-      ethBalanceOfDaiPool,
-      ethSold,
-      {
-        from: accounts[0],
-      }
-    );
-
-    const expectedEthTransfer = helper.calcEthTransferForBuyEcl(
-      ethBalanceOfEclPool,
-      ethBalanceOfDaiPool,
-      ethSold
-    );
-
-    assert.equal(
-      actualEthTransfer.toString(),
-      expectedEthTransfer.toString(),
-      "Did not transfer correct amount"
-    );
-  });
-
-  it("calcEthTransferForBuyEcl calculates correct transfer 11", async () => {
-    const eclipseumInstance = await Eclipseum.deployed();
-    const ethBalanceOfEclPool = new BN("100").mul(decimalFactor);
-    const ethBalanceOfDaiPool = new BN("0").mul(decimalFactor);
-    const ethSold = new BN("10000").mul(decimalFactor);
+    const ethBalanceOfEclPool = new BN("1000").mul(decimalFactor);
+    const ethBalanceOfDaiPool = new BN("1000").mul(decimalFactor);
+    const ethSold = new BN("100000").mul(decimalFactor);
 
     const actualEthTransfer = await eclipseumInstance.calcEthTransferForBuyEcl(
       ethBalanceOfEclPool,

@@ -25,19 +25,19 @@ function calcEthTransferForBuyEcl(
   ethBalanceOfDaiPool,
   ethSent
 ) {
-  let ethTransferToDaiPool = new BN();
+  let ethTransferToDaiPool = ethSent
+    .mul(new BN("4"))
+    .div(new BN("3"))
+    .add(ethBalanceOfEclPool)
+    .sub(ethBalanceOfDaiPool)
+    .div(new BN("2"));
 
-  if (
-    ethBalanceOfEclPool.gte(ethSent.div(new BN("2")).add(ethBalanceOfDaiPool))
-  ) {
-    ethTransferToDaiPool = ethSent.mul(new BN("3")).div(new BN("4"));
-  } else if (ethBalanceOfEclPool.add(ethSent).lte(ethBalanceOfDaiPool)) {
+  if (ethTransferToDaiPool.lt(new BN("0"))) {
     ethTransferToDaiPool = new BN("0");
-  } else {
-    ethTransferToDaiPool = ethBalanceOfEclPool
-      .add(ethSent)
-      .sub(ethBalanceOfDaiPool)
-      .div(new BN("2"));
+  } else if (
+    ethTransferToDaiPool.gt(ethSent.mul(new BN("5")).div(new BN("6")))
+  ) {
+    ethTransferToDaiPool = ethSent.mul(new BN("5")).div(new BN("6"));
   }
 
   return ethTransferToDaiPool;
