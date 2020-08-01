@@ -1,0 +1,1592 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts\Eclipseum.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> Eclipseum.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>144/144</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">69.84% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>88/126</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>15/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>144/144</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">314×</span>
+<span class="cline-any cline-yes">301×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">60×</span>
+<span class="cline-any cline-yes">60×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">81×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">77×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">pragma solidity =0.5.17;
+&nbsp;
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
+import "../node_modules/openzeppelin-solidity/contracts/utils/ReentrancyGuard.sol";
+import "../node_modules/openzeppelin-solidity/contracts/utils/Address.sol";
+&nbsp;
+/// @title The Eclipseum ERC20 Smart Contract
+contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
+    using SafeMath for uint256;
+    using Address for address payable;
+&nbsp;
+    struct SoftSellEclAmountsToReceive {
+        uint256 ethFromEclPool;
+        uint256 ethFromDaiPool;
+        uint256 daiFromDaiPool;
+    }
+&nbsp;
+    IERC20 public daiInterface;
+    bool public launched;
+    uint256 public ethBalanceOfEclPool;
+    uint256 public ethVolumeOfEclPool;
+    uint256 public ethVolumeOfDaiPool;
+&nbsp;
+    event LogBuyEcl(address userAddress, uint256 ethSpent, uint256 eclReceived);
+    event LogSellEcl(address userAddress, uint256 eclSold, uint256 ethReceived);
+    event LogSoftSellEcl(
+        address userAddress,
+        uint256 eclSold,
+        uint256 ethReceived,
+        uint256 daiReceived
+    );
+    event LogBuyDai(address userAddress, uint256 ethSpent, uint256 daiReceived);
+    event LogSellDai(address userAddress, uint256 daiSold, uint256 ethReceived);
+&nbsp;
+    modifier requireLaunched() {
+        require(launched, "Contract must be launched to invoke this function.");
+        _;
+    }
+&nbsp;
+    /// @notice Must be called with at least 0.02 ETH.
+    /// @notice Mints 100,000 ECL into the contract account
+    constructor(address _daiAddress)
+        public
+        payable
+        ERC20Detailed("Eclipseum", "ECL", 18)
+    {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(
+            msg.value &gt;= 0.02 ether,
+            "Must call constructor with at least 0.02 Ether."
+        );
+        _mint(address(this), 1e5 * (10**18));
+        daiInterface = IERC20(_daiAddress);
+    }
+&nbsp;
+    /// @notice This function is called once after deployment to launch the contract.
+    /// @notice Once launched, the transaction functions may be invoked.
+    /// @notice Some amount of DAI must be transferred to the contract before launch.
+    function launch() external {
+        require(!launched, "Contract has already been launched.");
+&nbsp;
+        require(
+            daiInterface.balanceOf(address(this)) &gt; 0,
+            "DAI pool balance must be greater than zero to launch contract."
+        );
+&nbsp;
+        ethBalanceOfEclPool = 0.01 ether;
+&nbsp;
+        launched = true;
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            ethBalanceOfEclPool.add(ethBalanceOfDaiPool()) ==
+                address(this).balance
+        );
+    }
+&nbsp;
+    /// @notice Allows a user to buy ECL with ETH from the ECL liquidity pool.
+    /// @param minEclToReceive The minimum amount of ECL the user is willing to receive.
+    /// @param deadline Epoch time deadline that the transaction must complete before, otherwise reverts.
+    function buyEcl(uint256 minEclToReceive, uint256 deadline)
+        external
+        payable
+        nonReentrant
+        requireLaunched
+    {
+        require(
+            deadline &gt;= block.timestamp,
+            "Transaction deadline has elapsed."
+        );
+        require(msg.value &gt; 0, "Value of ETH sent must be greater than zero.");
+&nbsp;
+        uint256 ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPool().sub(msg.value);
+        uint256 eclBalanceOfEclPoolLocal = eclBalanceOfEclPool();
+        uint256 eclToReceive = applyTransactionFee(
+            calcBOut(ethBalanceOfEclPool, eclBalanceOfEclPoolLocal, msg.value)
+        );
+        uint256 eclToMint = eclToReceive.mul(7).div(6).add(1);
+        uint256 ethTransferToDaiPool = calcEthTransferForBuyEcl(
+            ethBalanceOfEclPool,
+            ethBalanceOfDaiPoolLocal,
+            msg.value
+        );
+&nbsp;
+        require(
+            eclToReceive &gt;= minEclToReceive,
+            "Unable to send the minimum quantity of ECL to receive."
+        );
+&nbsp;
+        ethBalanceOfEclPool = ethBalanceOfEclPool.add(msg.value).sub(
+            ethTransferToDaiPool
+        );
+        ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPoolLocal.add(
+            ethTransferToDaiPool
+        );
+        eclBalanceOfEclPoolLocal = eclBalanceOfEclPoolLocal
+            .sub(eclToReceive)
+            .add(eclToMint);
+        ethVolumeOfEclPool += msg.value;
+&nbsp;
+        emit LogBuyEcl(msg.sender, msg.value, eclToReceive);
+&nbsp;
+        _transfer(address(this), msg.sender, eclToReceive);
+        _mint(address(this), eclToMint);
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
+                address(this).balance
+        );
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPoolLocal == eclBalanceOfEclPool());
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfEclPool &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfDaiPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPool() &gt; 0);
+    }
+&nbsp;
+    /// @notice Allows a user to sell ECL for ETH to the ECL liquidity pool.
+    /// @param eclSold The amount of ECL the user is selling.
+    /// @param minEthToReceive The minimum amount of ETH the user is willing to receive.
+    /// @param deadline Epoch time deadline that the transaction must complete before.
+    function sellEcl(
+        uint256 eclSold,
+        uint256 minEthToReceive,
+        uint256 deadline
+    ) external nonReentrant requireLaunched {
+        require(
+            deadline &gt;= block.timestamp,
+            "Transaction deadline has elapsed."
+        );
+        require(eclSold &gt; 0, "Value of ECL sold must be greater than zero.");
+        require(
+            eclSold &lt;= balanceOf(address(msg.sender)),
+            "ECL sold must be less than or equal to ECL balance."
+        );
+&nbsp;
+        uint256 ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPool();
+        uint256 eclBalanceOfEclPoolLocal = eclBalanceOfEclPool();
+        uint256 eclToBurn = eclSold.mul(7).div(6);
+        uint256 ethToReceive = applyTransactionFee(
+            calcBOut(eclBalanceOfEclPoolLocal, ethBalanceOfEclPool, eclSold)
+        );
+&nbsp;
+        require(
+            ethToReceive &gt;= minEthToReceive,
+            "Unable to send the minimum quantity of ETH to receive."
+        );
+&nbsp;
+        ethBalanceOfEclPool = ethBalanceOfEclPool.sub(ethToReceive);
+        eclBalanceOfEclPoolLocal = eclBalanceOfEclPoolLocal.add(eclSold).sub(
+            eclToBurn
+        );
+        ethVolumeOfEclPool += ethToReceive;
+&nbsp;
+        emit LogSellEcl(msg.sender, eclSold, ethToReceive);
+&nbsp;
+        _transfer(address(msg.sender), address(this), eclSold);
+        _burn(address(this), eclToBurn);
+        msg.sender.sendValue(ethToReceive);
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
+                address(this).balance
+        );
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPoolLocal == eclBalanceOfEclPool());
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfEclPool &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfDaiPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPool() &gt; 0);
+    }
+&nbsp;
+    /// @notice Allows a user to sell ECL for ETH and DAI to the ECL liquidity pool.
+    /// @param eclSold The amount of ECL the user is selling.
+    /// @param minEthToReceive The minimum amount of ETH the user is willing to receive.
+    /// @param minDaiToReceive The minimum amount of DAI the user is willing to receive.
+    /// @param deadline Epoch time deadline that the transaction must complete before.
+    function softSellEcl(
+        uint256 eclSold,
+        uint256 minEthToReceive,
+        uint256 minDaiToReceive,
+        uint256 deadline
+    ) external nonReentrant requireLaunched {
+        require(
+            deadline &gt;= block.timestamp,
+            "Transaction deadline has elapsed."
+        );
+        require(eclSold &gt; 0, "Value of ECL sold must be greater than zero.");
+        require(
+            eclSold &lt;= balanceOf(address(msg.sender)),
+            "ECL sold must be less than or equal to ECL balance."
+        );
+&nbsp;
+        uint256 ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPool();
+        uint256 circulatingSupplyLocal = circulatingSupply();
+        uint256 eclBalanceOfEclPoolLocal = eclBalanceOfEclPool();
+        uint256 daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPool();
+        uint256 eclToBurn = applyTransactionFee(
+            eclSold.mul(eclBalanceOfEclPoolLocal).div(circulatingSupplyLocal)
+        )
+            .add(eclSold);
+        SoftSellEclAmountsToReceive memory amountsToReceive;
+        amountsToReceive.ethFromEclPool = applyTransactionFee(
+            eclSold.mul(ethBalanceOfEclPool).div(circulatingSupplyLocal)
+        );
+        amountsToReceive.ethFromDaiPool = applyTransactionFee(
+            eclSold.mul(ethBalanceOfDaiPoolLocal).div(circulatingSupplyLocal)
+        );
+        amountsToReceive.daiFromDaiPool = applyTransactionFee(
+            eclSold.mul(daiBalanceOfDaiPoolLocal).div(circulatingSupplyLocal)
+        );
+&nbsp;
+        require(
+            amountsToReceive.ethFromEclPool.add(
+                amountsToReceive.ethFromDaiPool
+            ) &gt;= minEthToReceive,
+            "Unable to send the minimum quantity of ETH to receive."
+        );
+        require(
+            amountsToReceive.daiFromDaiPool &gt;= minDaiToReceive,
+            "Unable to send the minimum quantity of DAI to receive."
+        );
+&nbsp;
+        ethBalanceOfEclPool = ethBalanceOfEclPool.sub(
+            amountsToReceive.ethFromEclPool
+        );
+        ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPoolLocal.sub(
+            amountsToReceive.ethFromDaiPool
+        );
+        daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPoolLocal.sub(
+            amountsToReceive.daiFromDaiPool
+        );
+        eclBalanceOfEclPoolLocal = eclBalanceOfEclPoolLocal.add(eclSold).sub(
+            eclToBurn
+        );
+        ethVolumeOfEclPool += amountsToReceive.ethFromEclPool;
+        ethVolumeOfDaiPool += amountsToReceive.ethFromDaiPool;
+&nbsp;
+        emit LogSoftSellEcl(
+            msg.sender,
+            eclSold,
+            amountsToReceive.ethFromEclPool.add(
+                amountsToReceive.ethFromDaiPool
+            ),
+            amountsToReceive.daiFromDaiPool
+        );
+&nbsp;
+        _transfer(address(msg.sender), address(this), eclSold);
+        _burn(address(this), eclToBurn);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            daiInterface.transfer(msg.sender, amountsToReceive.daiFromDaiPool)
+        );
+        msg.sender.sendValue(
+            amountsToReceive.ethFromEclPool.add(amountsToReceive.ethFromDaiPool)
+        );
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
+                address(this).balance
+        );
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPoolLocal == eclBalanceOfEclPool());
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPoolLocal == daiBalanceOfDaiPool());
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfEclPool &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfDaiPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPool() &gt; 0);
+    }
+&nbsp;
+    /// @notice Allows a user to buy DAI with ETH from the DAI liquidity pool.
+    /// @param minDaiToReceive The minimum amount of DAI the user is willing to receive.
+    /// @param deadline Epoch time deadline that the transaction must complete before.
+    function buyDai(uint256 minDaiToReceive, uint256 deadline)
+        external
+        payable
+        nonReentrant
+        requireLaunched
+    {
+        require(
+            deadline &gt;= block.timestamp,
+            "Transaction deadline has elapsed."
+        );
+        require(msg.value &gt; 0, "Value of ETH sent must be greater than zero.");
+&nbsp;
+        uint256 ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPool().sub(msg.value);
+        uint256 daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPool();
+        uint256 daiToReceive = applyTransactionFee(
+            calcBOut(
+                ethBalanceOfDaiPoolLocal,
+                daiBalanceOfDaiPoolLocal,
+                msg.value
+            )
+        );
+        uint256 ethTransferToEclPool = msg.value.mul(15).div(10000);
+&nbsp;
+        require(
+            daiToReceive &gt;= minDaiToReceive,
+            "Unable to send the minimum quantity of DAI to receive."
+        );
+&nbsp;
+        ethBalanceOfEclPool = ethBalanceOfEclPool.add(ethTransferToEclPool);
+        ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPoolLocal.add(msg.value).sub(
+            ethTransferToEclPool
+        );
+        daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPoolLocal.sub(daiToReceive);
+        ethVolumeOfDaiPool += msg.value;
+&nbsp;
+        emit LogBuyDai(msg.sender, msg.value, daiToReceive);
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiInterface.transfer(address(msg.sender), daiToReceive));
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
+                address(this).balance
+        );
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPoolLocal == daiBalanceOfDaiPool());
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfEclPool &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfDaiPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPool() &gt; 0);
+    }
+&nbsp;
+    /// @notice Allows a user to sell DAI for ETH to the DAI liquidity pool.
+    /// @param daiSold The amount of DAI the user is selling.
+    /// @param minEthToReceive The minimum amount of ETH the user is willing to receive.
+    /// @param deadline Epoch time deadline that the transaction must complete before.
+    function sellDai(
+        uint256 daiSold,
+        uint256 minEthToReceive,
+        uint256 deadline
+    ) external nonReentrant requireLaunched {
+        require(
+            deadline &gt;= block.timestamp,
+            "Transaction deadline has elapsed."
+        );
+        require(daiSold &gt; 0, "Value of DAI sold must be greater than zero.");
+        require(
+            daiSold &lt;= daiInterface.balanceOf(address(msg.sender)),
+            "DAI sold must be less than or equal to DAI balance."
+        );
+        require(
+            daiSold &lt;=
+                daiInterface.allowance(address(msg.sender), address(this)),
+            "DAI sold exceeds allowance."
+        );
+&nbsp;
+        uint256 ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPool();
+        uint256 daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPool();
+        uint256 ethToReceiveBeforeFee = calcBOut(
+            daiBalanceOfDaiPoolLocal,
+            ethBalanceOfDaiPoolLocal,
+            daiSold
+        );
+        uint256 ethToReceive = applyTransactionFee(ethToReceiveBeforeFee);
+        uint256 ethTransferToEclPool = ethToReceiveBeforeFee
+            .sub(ethToReceive)
+            .div(2);
+&nbsp;
+        require(
+            ethToReceive &gt;= minEthToReceive,
+            "Unable to send the minimum quantity of ETH to receive."
+        );
+&nbsp;
+        ethBalanceOfEclPool = ethBalanceOfEclPool.add(ethTransferToEclPool);
+        ethBalanceOfDaiPoolLocal = ethBalanceOfDaiPoolLocal
+            .sub(ethToReceive)
+            .sub(ethTransferToEclPool);
+        daiBalanceOfDaiPoolLocal = daiBalanceOfDaiPoolLocal.add(daiSold);
+        ethVolumeOfDaiPool += ethToReceive;
+&nbsp;
+        emit LogSellDai(msg.sender, daiSold, ethToReceive);
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            daiInterface.transferFrom(
+                address(msg.sender),
+                address(this),
+                daiSold
+            )
+        );
+        msg.sender.sendValue(ethToReceive);
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(
+            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
+                address(this).balance
+        );
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPoolLocal == daiBalanceOfDaiPool());
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfEclPool &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethBalanceOfDaiPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(eclBalanceOfEclPool() &gt; 0);
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(daiBalanceOfDaiPool() &gt; 0);
+    }
+&nbsp;
+    /// @notice Calculates amount of asset B for user to receive using constant product market maker algorithm.
+    /// @dev A value of one is subtracted in the _bToReceive calculation such that rounding
+    /// @dev errors favour the pool over the user.
+    /// @param aBalance The balance of asset A in the liquidity pool.
+    /// @param bBalance The balance of asset B in the liquidity pool.
+    /// @param aSent The quantity of asset A sent by the user to the liquidity pool.
+    /// @return bToReceive The quantity of asset B the user would receive before transaction fee is applied.
+    function calcBOut(
+        uint256 aBalance,
+        uint256 bBalance,
+        uint256 aSent
+    ) public pure returns (uint256) {
+        uint256 denominator = aBalance.add(aSent);
+        uint256 fraction = aBalance.mul(bBalance).div(denominator);
+        uint256 bToReceive = bBalance.sub(fraction).sub(1);
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(bToReceive &lt; bBalance);
+&nbsp;
+        return bToReceive;
+    }
+&nbsp;
+    /// @notice Calculates the amount of ETH to transfer from the ECL pool to the DAI pool for the buyEcl function.
+    /// @param ethBalanceOfEclPoolLocal The balance of ETH in the ECL liquidity pool.
+    /// @param ethBalanceOfDaiPoolLocal The balance of ETH in the DAI liquidity pool.
+    /// @param ethSent The quantity of ETH sent by the user in the buyEcl function.
+    /// @return ethTransferToDaiPool The quantity of ETH to transfer from the ECL pool to the DAI pool.
+    function calcEthTransferForBuyEcl(
+        uint256 ethBalanceOfEclPoolLocal,
+        uint256 ethBalanceOfDaiPoolLocal,
+        uint256 ethSent
+    ) public pure returns (uint256) {
+        uint256 ethTransferToDaiPool;
+&nbsp;
+        if (
+            ethBalanceOfEclPoolLocal &gt;=
+            ethSent.div(2).add(ethBalanceOfDaiPoolLocal)
+        ) {
+            ethTransferToDaiPool = ethSent.mul(3).div(4);
+        } else if (
+            ethBalanceOfEclPoolLocal.add(ethSent) &lt;= ethBalanceOfDaiPoolLocal
+        ) {
+            ethTransferToDaiPool = 0;
+        } else {
+            ethTransferToDaiPool = ethBalanceOfEclPoolLocal
+                .add(ethSent)
+                .sub(ethBalanceOfDaiPoolLocal)
+                .div(2);
+        }
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>assert(ethTransferToDaiPool &lt;= ethSent.mul(3).div(4));
+&nbsp;
+        return ethTransferToDaiPool;
+    }
+&nbsp;
+    /// @notice Calculates the amount for the user to receive with a 0.3% transaction fee applied.
+    /// @param amountBeforeFee The amount the user will receive before transaction fee is applied.
+    /// @return amountAfterFee The amount the user will receive with transaction fee applied.
+    function applyTransactionFee(uint256 amountBeforeFee)
+        public
+        pure
+        returns (uint256)
+    {
+        uint256 amountAfterFee = amountBeforeFee.mul(997).div(1000);
+        return amountAfterFee;
+    }
+&nbsp;
+    /// @notice Returns the ECL balance of the ECL pool.
+    function eclBalanceOfEclPool()
+        public
+        view
+        requireLaunched
+        returns (uint256)
+    {
+        return balanceOf(address(this));
+    }
+&nbsp;
+    /// @notice Returns the ETH balance of the DAI pool.
+    function ethBalanceOfDaiPool()
+        public
+        view
+        requireLaunched
+        returns (uint256)
+    {
+        return address(this).balance.sub(ethBalanceOfEclPool);
+    }
+&nbsp;
+    /// @notice Returns the DAI balance of the DAI pool.
+    function daiBalanceOfDaiPool()
+        public
+        view
+        requireLaunched
+        returns (uint256)
+    {
+        return daiInterface.balanceOf(address(this));
+    }
+&nbsp;
+    /// @notice Returns the circulating supply of ECL.
+    function circulatingSupply() public view requireLaunched returns (uint256) {
+        return totalSupply().sub(eclBalanceOfEclPool());
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jul 22 2020 21:10:25 GMT-0400 (Eastern Daylight Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
