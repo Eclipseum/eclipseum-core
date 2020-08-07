@@ -1,9 +1,19 @@
-# eclipseum-core
+# Eclipseum
+
 Includes the Eclipseum solidity source code and truffle test suite.
 
-To Run Tests:
-1) Clone eclipseum-core repository
-2) In the terminal, change to the eclipseum-core repository
-3) Run "npm install"
-4) Install and launch Ganache 
-5) In the terminal, while in the eclipseum-core root folder, run "truffle test"
+# Local Development
+
+The following assumes the use of `node@>=10`.
+
+## Install Dependencies
+
+'npm install'
+
+## Compile Contracts
+
+'truffle compile'
+
+## Run Tests
+
+'truffle test'
