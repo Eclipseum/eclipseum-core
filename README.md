@@ -16,4 +16,6 @@ The following assumes the use of `node@>=10`.
 
 ## Run Tests
 
+Ensure Ganache or equivalent local test network is running
+
 'truffle test'
