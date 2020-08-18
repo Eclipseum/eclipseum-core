@@ -441,18 +441,15 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
 
         if (
             ethBalanceOfEclPoolLocal >=
-            ethSent.div(3).add(ethBalanceOfDaiPoolLocal)
+            ethSent.mul(4).div(6).add(ethBalanceOfDaiPoolLocal)
         ) {
             ethTransferToDaiPool = ethSent.mul(5).div(6);
         } else if (
-            ethSent.mul(4).div(3).add(ethBalanceOfEclPoolLocal) <=
-            ethBalanceOfDaiPoolLocal
+            ethSent.add(ethBalanceOfEclPoolLocal) <= ethBalanceOfDaiPoolLocal
         ) {
             ethTransferToDaiPool = 0;
         } else {
             ethTransferToDaiPool = ethSent
-                .mul(4)
-                .div(3)
                 .add(ethBalanceOfEclPoolLocal)
                 .sub(ethBalanceOfDaiPoolLocal)
                 .div(2);
