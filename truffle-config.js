@@ -18,11 +18,22 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+
+const getEnv = (env) => {
+  const value = process.env[env];
+  if (typeof value === "undefined") {
+    throw new Error(`${env} has not been set.`);
+  }
+  return value;
+};
+const mnemonic = getEnv("ETH_WALLET_MNEMONIC");
+const liveNetwork = getEnv("ETH_LIVE_NETWORK");
+const liveNetworkId = getEnv("ETH_LIVE_NETWORK_ID");
 
 module.exports = {
   /**
@@ -47,6 +58,10 @@ module.exports = {
       host: "localhost", // Localhost (default: none)
       port: 7545, // Standard Ethereum port (default: none)
       network_id: 5777, // Any network (default: none)
+    },
+    live: {
+      provider: () => new HDWalletProvider(mnemonic, liveNetwork),
+      network_id: liveNetworkId,
     },
     // Another network with more advanced options...
     // advanced: {
