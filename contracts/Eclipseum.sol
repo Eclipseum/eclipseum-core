@@ -49,6 +49,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
             msg.value >= 0.02 ether,
             "Must call constructor with at least 0.02 Ether."
         );
+
         _mint(address(this), 1e5 * (10**18));
         daiInterface = IERC20(_daiAddress);
     }
@@ -58,14 +59,12 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
     /// @notice Once launched, the transaction functions may be invoked.
     function launch() external {
         require(!launched, "Contract has already been launched.");
-
         require(
             daiInterface.balanceOf(address(this)) > 0,
             "DAI pool balance must be greater than zero to launch contract."
         );
 
         ethBalanceOfEclPool = 0.01 ether;
-
         launched = true;
 
         assert(
