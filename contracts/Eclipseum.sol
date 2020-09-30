@@ -121,10 +121,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         _transfer(address(this), msg.sender, eclToReceive);
         _mint(address(this), eclToMint);
 
-        assert(
-            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
-                address(this).balance
-        );
+        assert(ethBalanceOfDaiPoolLocal == ethBalanceOfDaiPool());
         assert(eclBalanceOfEclPoolLocal == eclBalanceOfEclPool());
         assert(ethBalanceOfEclPool > 0);
         assert(ethBalanceOfDaiPool() > 0);
@@ -175,10 +172,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         _burn(address(this), eclToBurn);
         msg.sender.sendValue(ethToReceive);
 
-        assert(
-            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
-                address(this).balance
-        );
+        assert(ethBalanceOfDaiPoolLocal == ethBalanceOfDaiPool());
         assert(eclBalanceOfEclPoolLocal == eclBalanceOfEclPool());
         assert(ethBalanceOfEclPool > 0);
         assert(ethBalanceOfDaiPool() > 0);
@@ -276,6 +270,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         );
         assert(eclBalanceOfEclPoolLocal == eclBalanceOfEclPool());
         assert(daiBalanceOfDaiPoolLocal == daiBalanceOfDaiPool());
+        assert(ethBalanceOfDaiPoolLocal == ethBalanceOfDaiPool());
         assert(ethBalanceOfEclPool > 0);
         assert(ethBalanceOfDaiPool() > 0);
         assert(eclBalanceOfEclPool() > 0);
@@ -324,10 +319,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
 
         assert(daiInterface.transfer(address(msg.sender), daiToReceive));
 
-        assert(
-            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
-                address(this).balance
-        );
+        assert(ethBalanceOfDaiPoolLocal == ethBalanceOfDaiPool());
         assert(daiBalanceOfDaiPoolLocal == daiBalanceOfDaiPool());
         assert(ethBalanceOfEclPool > 0);
         assert(ethBalanceOfDaiPool() > 0);
@@ -394,10 +386,7 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
         );
         msg.sender.sendValue(ethToReceive);
 
-        assert(
-            ethBalanceOfEclPool.add(ethBalanceOfDaiPoolLocal) ==
-                address(this).balance
-        );
+        assert(ethBalanceOfDaiPoolLocal == ethBalanceOfDaiPool());
         assert(daiBalanceOfDaiPoolLocal == daiBalanceOfDaiPool());
         assert(ethBalanceOfEclPool > 0);
         assert(ethBalanceOfDaiPool() > 0);
