@@ -66,11 +66,6 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
 
         ethBalanceOfEclPool = 0.01 ether;
         launched = true;
-
-        assert(
-            ethBalanceOfEclPool.add(ethBalanceOfDaiPool()) ==
-                address(this).balance
-        );
     }
 
     /// @notice Enables a user to buy ECL with ETH from the ECL liquidity pool.
