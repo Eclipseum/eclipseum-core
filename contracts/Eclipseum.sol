@@ -22,16 +22,32 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
     uint256 public ethVolumeOfEclPool;
     uint256 public ethVolumeOfDaiPool;
 
-    event LogBuyEcl(address userAddress, uint256 ethSpent, uint256 eclReceived);
-    event LogSellEcl(address userAddress, uint256 eclSold, uint256 ethReceived);
+    event LogBuyEcl(
+        address indexed userAddress,
+        uint256 ethSpent,
+        uint256 eclReceived
+    );
+    event LogSellEcl(
+        address indexed userAddress,
+        uint256 eclSold,
+        uint256 ethReceived
+    );
     event LogSoftSellEcl(
-        address userAddress,
+        address indexed userAddress,
         uint256 eclSold,
         uint256 ethReceived,
         uint256 daiReceived
     );
-    event LogBuyDai(address userAddress, uint256 ethSpent, uint256 daiReceived);
-    event LogSellDai(address userAddress, uint256 daiSold, uint256 ethReceived);
+    event LogBuyDai(
+        address indexed userAddress,
+        uint256 ethSpent,
+        uint256 daiReceived
+    );
+    event LogSellDai(
+        address indexed userAddress,
+        uint256 daiSold,
+        uint256 ethReceived
+    );
 
     modifier requireLaunched() {
         require(launched, "Contract must be launched to invoke this function.");
@@ -252,8 +268,9 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
 
         _transfer(address(msg.sender), address(this), eclSold);
         _burn(address(this), eclToBurn);
-        assert(
-            daiInterface.transfer(msg.sender, amountsToReceive.daiFromDaiPool)
+        require(
+            daiInterface.transfer(msg.sender, amountsToReceive.daiFromDaiPool),
+            "DAI Transfer failed."
         );
         msg.sender.sendValue(
             amountsToReceive.ethFromEclPool.add(amountsToReceive.ethFromDaiPool)
@@ -312,7 +329,10 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
 
         emit LogBuyDai(msg.sender, msg.value, daiToReceive);
 
-        assert(daiInterface.transfer(address(msg.sender), daiToReceive));
+        require(
+            daiInterface.transfer(address(msg.sender), daiToReceive),
+            "DAI Transfer failed."
+        );
 
         assert(ethBalanceOfDaiPoolLocal == ethBalanceOfDaiPool());
         assert(daiBalanceOfDaiPoolLocal == daiBalanceOfDaiPool());
@@ -372,12 +392,13 @@ contract Eclipseum is ERC20, ERC20Detailed, ReentrancyGuard {
 
         emit LogSellDai(msg.sender, daiSold, ethToReceive);
 
-        assert(
+        require(
             daiInterface.transferFrom(
                 address(msg.sender),
                 address(this),
                 daiSold
-            )
+            ),
+            "DAI Transfer failed."
         );
         msg.sender.sendValue(ethToReceive);
 
