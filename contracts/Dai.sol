@@ -1,3 +1,6 @@
+/// This contract provides generic ERC-20 functionality for testing purposes,
+/// and is not the actual DAI contract code.
+
 pragma solidity ^0.5.0;
 
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
